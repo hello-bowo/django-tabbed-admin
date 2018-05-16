@@ -18,10 +18,11 @@ class TabbedModelAdmin(ModelAdmin):
         tabs.
         If the tabs attribute is not set, use the default ModelAdmin method.
         """
-        tabs_fieldsets = self.get_formatted_tabs(request, obj)['fieldsets']
-        if self.tabs is not None:
-            self.fieldsets = ()
-        self.fieldsets = self.add_tabbed_item(tabs_fieldsets, self.fieldsets)
+        if 'fieldsets' in self.get_formatted_tabs(request, obj):
+            tabs_fieldsets = self.get_formatted_tabs(request, obj)['fieldsets']
+            if self.tabs is not None:
+                self.fieldsets = ()
+            self.fieldsets = self.add_tabbed_item(tabs_fieldsets, self.fieldsets)
         return super(TabbedModelAdmin, self).get_fieldsets(request, obj)
 
     def get_inline_instances(self, request, obj=None):
